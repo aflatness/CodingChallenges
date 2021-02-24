@@ -1,0 +1,25 @@
+/* Run-length encoding is a fast and simple method of encoding strings. The basic idea is to represent repeated successive characters as a single count and character. For example, the string "AAAABBBCCDAA" would be encoded as "4A3B2C1D2A".
+
+Implement run-length encoding and decoding. You can assume the string to be encoded have no digits and consists solely of alphabetic characters. You can assume the string to be decoded is valid. */
+
+const runLength = (str) => {
+  if (Number(str[0])) {
+   const couples = str.match(/\d+\w/g);
+   return couples.reduce((m, v) => m += v[v.length - 1].repeat(v.substring(0, v.length - 1)), '')
+  }
+  let current = str[0];
+  let count = 0;
+  let encoded = ''
+  str.split('').forEach((v, i) => {
+    if (i === str.length - 1) {
+      encoded += v === current ? `${count + 1}${v}` : `${count}${current}1${v}`;
+    } else if (v === current) {
+      count++;
+    } else {
+      encoded += `${count}${current}`;
+      current = v;
+      count = 1;
+    }
+  })
+  return encoded;
+}
